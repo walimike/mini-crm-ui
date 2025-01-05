@@ -1,17 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
 
-export const useContactsStore = defineStore("contacts", () => {
-  const contacts = ref([]);
+export const useLeadsStore = defineStore("leads", () => {
+  const leads = ref([]);
   const loading = ref(false);
   const error = ref(null);
 
-  const API_BASE_URL = "http://127.0.0.1:8000/api/contacts/";
-  const authStore = useAuthStore();
+  const API_BASE_URL = "http://127.0.0.1:8000/api/leads/";
 
-  const fetchContacts = async () => {
+  const fetchLeads = async () => {
     loading.value = true;
     error.value = null;
 
@@ -22,57 +20,57 @@ export const useContactsStore = defineStore("contacts", () => {
         },
       });
       
-      contacts.value = response.data; 
+      leads.value = response.data; 
     } catch (err) {
-      error.value = "Failed to fetch contacts.";
+      error.value = "Failed to fetch leads.";
       console.error(err);
     } finally {
       loading.value = false;
     }
   };
 
-  const addContact = async (contact) => {
+  const addLead = async (lead) => {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await axios.post(API_BASE_URL, contact, {
+      const response = await axios.post(API_BASE_URL, lead, {
         headers: {
           Authorization: `Bearer ${localStorage.accessToken}`,
         },
       });
-      contacts.value.push(response.data); // Add the new contact to the list
+      leads.value.push(response.data); // Add the new lead to the list
     } catch (err) {
-      error.value = "Failed to add contact.";
+      error.value = "Failed to add lead.";
       console.error(err);
     } finally {
       loading.value = false;
     }
   };
 
-  const updateContact = async (id, updatedContact) => {
+  const updateLead = async (id, updatedLead) => {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await axios.put(`${API_BASE_URL}/${id}/`, updatedContact, {
+      const response = await axios.put(`${API_BASE_URL}/${id}/`, updatedLead, {
         headers: {
           Authorization: `Bearer ${localStorage.accessToken}`,
         },
       });
-      const index = contacts.value.findIndex((contact) => contact.id === id);
+      const index = leads.value.findIndex((lead) => lead.id === id);
       if (index !== -1) {
-        contacts.value[index] = response.data; // Update the contact in the list
+        leads.value[index] = response.data; // Update the lead in the list
       }
     } catch (err) {
-      error.value = "Failed to update contact.";
+      error.value = "Failed to update lead.";
       console.error(err);
     } finally {
       loading.value = false;
     }
   };
 
-  const deleteContact = async (id) => {
+  const deleteLead = async (id) => {
     loading.value = true;
     error.value = null;
 
@@ -82,9 +80,9 @@ export const useContactsStore = defineStore("contacts", () => {
           Authorization: `Bearer ${localStorage.accessToken}`,
         },
       });
-      contacts.value = contacts.value.filter((contact) => contact.id !== id); // Remove the contact from the list
+      leads.value = leads.value.filter((lead) => lead.id !== id); // Remove the lead from the list
     } catch (err) {
-      error.value = "Failed to delete contact.";
+      error.value = "Failed to delete lead.";
       console.error(err);
     } finally {
       loading.value = false;
@@ -92,12 +90,12 @@ export const useContactsStore = defineStore("contacts", () => {
   };
 
   return {
-    contacts,
+    leads,
     loading,
     error,
-    fetchContacts,
-    addContact,
-    updateContact,
-    deleteContact,
+    fetchLeads,
+    addLead,
+    updateLead,
+    deleteLead,
   };
 });

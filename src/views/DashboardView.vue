@@ -31,32 +31,41 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useContactsStore } from "@/stores/contacts";
+
 export default {
   name: "DashboardView",
-  data() {
+  setup() {
+    const contactStore = useContactsStore();
+
+    const contactCount = computed(() => contactStore.contacts.length);
+
+    const cards = [
+      {
+        title: "Contacts",
+        subtitle: computed(() => `${contactCount.value} contacts available`),
+        text: "Manage your contacts efficiently and keep track of important information.",
+      },
+      {
+        title: "Leads",
+        subtitle: "Card subtitle secondary text",
+        text: "Keep track of your leads and stay updated with the latest opportunities.",
+      },
+      {
+        title: "Notes",
+        subtitle: "Card subtitle secondary text",
+        text: "Organize your thoughts and maintain important records in one place.",
+      },
+      {
+        title: "Reminders",
+        subtitle: "Card subtitle secondary text",
+        text: "Never miss a deadline or important event with timely reminders.",
+      },
+    ];
+
     return {
-      cards: [
-        {
-          title: "Contacts",
-          subtitle: "Card subtitle secondary text",
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-          title: "Leads",
-          subtitle: "Card subtitle secondary text",
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-          title: "Notes",
-          subtitle: "Card subtitle secondary text",
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-          title: "Reminders",
-          subtitle: "Card subtitle secondary text",
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-      ],
+      cards,
     };
   },
 };
